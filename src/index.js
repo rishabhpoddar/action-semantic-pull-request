@@ -40,7 +40,7 @@ module.exports = async function run() {
       pull_number: contextPullRequest.number
     });
 
-    console.log("PULL REQUESTS: ", pullRequest);
+    throw new Error("PULL REQUESTS: ", pullRequest);
 
     // Pull requests that start with "[WIP] " are excluded from the check.
     const isWip = wip && /^\[WIP\]\s/.test(pullRequest.title);
