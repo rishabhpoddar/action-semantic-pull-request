@@ -34,11 +34,13 @@ module.exports = async function run() {
     // the user updates the title and re-runs the workflow, it would
     // be outdated. Therefore fetch the pull request via the REST API
     // to ensure we use the current title.
-    const {data: pullRequest} = await client.pulls.get({
+    const { data: pullRequest } = await client.pulls.get({
       owner,
       repo,
       pull_number: contextPullRequest.number
     });
+
+    console.log("PULL REQUESTS: ", pullRequest);
 
     // Pull requests that start with "[WIP] " are excluded from the check.
     const isWip = wip && /^\[WIP\]\s/.test(pullRequest.title);
@@ -121,8 +123,8 @@ module.exports = async function run() {
         description: isWip
           ? 'This PR is marked with "[WIP]".'
           : validationError
-          ? 'PR title validation failed'
-          : 'Ready for review & merge.',
+            ? 'PR title validation failed'
+            : 'Ready for review & merge.',
         context: 'action-semantic-pull-request'
       });
     }
